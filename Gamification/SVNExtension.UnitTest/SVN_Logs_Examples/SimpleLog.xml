@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<log>
+  <logentry
+     revision="61">
+    <author>hbsis.leonardo.kobus</author>
+    <date>2013-09-05T17:02:49.402228Z</date>
+    <paths>
+      <path
+         action="M"
+         prop-mods="false"
+         text-mods="true"
+         kind="">/trunk/CsprojEditor/CsprojEditor/Program.cs</path>
+      <path
+         action="M"
+         prop-mods="false"
+         text-mods="true"
+         kind="">/trunk/CsprojEditor/CsprojEditor/Properties/AssemblyInfo.cs</path>
+    </paths>
+    <msg>
+      PD-184
+      Alteração no Assembly Info
+    </msg>
+  </logentry>  
+</log>
