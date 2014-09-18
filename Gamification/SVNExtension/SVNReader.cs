@@ -12,24 +12,32 @@ namespace SVNExtension
 
         public SVNModel Read(string xmlPath)
         {
-            if (xmlPath == null)
+            var begin = 0;
+            return Read(xmlPath, begin);
+        }
+
+        public SVNModel Read(string xmlPath, int startRevision)
+        {
+
+            if (string.IsNullOrWhiteSpace(xmlPath))
             {
                 throw new ArgumentNullException("xmlPath");
             }
             var result = new SVNModel();
             var languageBuilder = new LanguageBuilder();
-            
+
             var doc = new XmlDocument();
             doc.Load(xmlPath);
-            foreach (XmlNode node in doc.SelectNodes("//path"))
-            {
+            var xpath = string.Format("//logentry[@revision>'{0}']/paths/path", startRevision);
+            foreach (XmlNode node in doc.SelectNodes(xpath))
+            {                            
                 var action = node.Attributes["action"].Value;
+                var kind = node.InnerText;
                 result = SVNBuilder.AddAction(action, result);
-                var kind = node.Attributes["kind"].Value;
                 var model = LanguageBuilder.TransformPathToLanguageModel(kind);
-                languageBuilder.AddLanguage(model);    
+                languageBuilder.AddLanguage(model);                             
             }
-            
+            result.CurrentRevision = Convert.ToInt32(doc.SelectSingleNode("//logentry").Attributes["revision"].Value);
             return result;
         }
     }

@@ -13,7 +13,7 @@ namespace SVNExtension
         public int Modified { get; private set; }
         public int Add { get; private set; }
         public int Deleted { get; private set; }
-
+        public int CurrentRevision { get; set; }
         private int one = 1;
 
         public SVNModel()

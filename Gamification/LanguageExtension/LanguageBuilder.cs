@@ -38,8 +38,12 @@ namespace LanguageExtension
             {
                 throw new ArgumentException("Caminho inserido é invalido");
             }
-            var name = Path.GetExtension(path);
+            var name = Path.GetExtension(path).TrimStart('.');
             var file = Path.GetFileName(path);
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                name = "Folder";
+            }
             return new LanguageModel(name, file);
         }
     }

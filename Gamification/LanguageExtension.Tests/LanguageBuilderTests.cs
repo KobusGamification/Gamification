@@ -35,20 +35,32 @@ namespace LanguageExtension.Tests
             var test3 = @"arquivo.cs";
 
             var model = LanguageBuilder.TransformPathToLanguageModel(test1);
-            Assert.AreEqual(model.Name, "cs");
-            Assert.AreEqual(model.File, "file.cs");
+            Assert.AreEqual("cs", model.Name);
+            Assert.AreEqual("file.cs", model.File);
 
             model = LanguageBuilder.TransformPathToLanguageModel(test2);
-            Assert.AreEqual(model.Name, "java");
-            Assert.AreEqual(model.File, "file2.java");
+            Assert.AreEqual("java", model.Name);
+            Assert.AreEqual("file2.java", model.File);
 
             model = LanguageBuilder.TransformPathToLanguageModel(test3);
-            Assert.AreEqual(model.Name, "cs");
-            Assert.AreEqual(model.File, "arquivo.cs");
+            Assert.AreEqual("cs", model.Name);
+            Assert.AreEqual("arquivo.cs", model.File);
 
         }
 
+        [Test]
+        public void TransformPathInFolder()
+        {
+            var test = "folder1";
+            var test2 = @".\TesteFolder\Folder";
 
+            var model = LanguageBuilder.TransformPathToLanguageModel(test);
+            Assert.AreEqual("Folder", model.Name);
+            Assert.AreEqual("folder1", model.File);
+            model = LanguageBuilder.TransformPathToLanguageModel(test2);
+            Assert.AreEqual("Folder", model.Name);
+            Assert.AreEqual("Folder", model.File);
+        }
 
 
         public object LanguageModel { get; set; }
