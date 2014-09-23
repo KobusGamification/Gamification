@@ -5,40 +5,80 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using LanguageExtension;
+using Extension;
 namespace SVNExtension
 {
     public class SVNReader
     {
 
-        public SVNModel Read(string xmlPath)
+        public List<IUser> Read(string xmlPath)
         {
             var begin = 0;
             return Read(xmlPath, begin);
         }
 
-        public SVNModel Read(string xmlPath, int startRevision)
+        public List<IUser> Read(string xmlPath, int startRevision)
         {
-
+            var results = new Stack<IUser>();
             if (string.IsNullOrWhiteSpace(xmlPath))
             {
                 throw new ArgumentNullException("xmlPath");
             }
-            var result = new SVNModel();
-            var languageBuilder = new LanguageBuilder();
-
+            LanguageBuilder languageBuilder = null;
+            var svnModel = new SVNModel();
             var doc = new XmlDocument();
-            doc.Load(xmlPath);
             var xpath = string.Format("//logentry[@revision>'{0}']/paths/path", startRevision);
+            doc.Load(xmlPath);
+
+            var userDict = new Dictionary<string, IUser>();
+            IUser user = null;
             foreach (XmlNode node in doc.SelectNodes(xpath))
-            {                            
+            {
+                var currentUser = node.ParentNode.ParentNode.SelectSingleNode("author").InnerText;
+                if (userDict.Keys.Count > 0)
+                {
+                    if (userDict.Keys.Contains(currentUser))
+                    {
+                        user = userDict[currentUser];
+                    }
+                    else
+                    {
+                        user = new DefaultUser(currentUser);
+                        userDict.Add(currentUser, user);
+                    }
+                }
+                else
+                {
+                    user = new DefaultUser(currentUser);
+                    userDict.Add(currentUser, user);
+                }
+
+                
+
+                if (!(user.ExtensionPoint.Keys.Count > 0))
+                {
+                    user.ExtensionPoint.Add("LanguageExtension", new LanguageBuilder());
+                    user.ExtensionPoint.Add("SVNExtension", new SVNModel());                    
+                }
+
                 var action = node.Attributes["action"].Value;
                 var kind = node.InnerText;
-                result = SVNBuilder.AddAction(action, result);
-                var model = LanguageBuilder.TransformPathToLanguageModel(kind);
-                languageBuilder.AddLanguage(model);                             
+                var modelLanguage = LanguageBuilder.TransformPathToLanguageModel(kind);
+                ((LanguageBuilder)user.ExtensionPoint["LanguageExtension"]).AddLanguage(modelLanguage);
+                user.ExtensionPoint["SVNExtension"] = SVNBuilder.AddAction(action, ((SVNModel)user.ExtensionPoint["SVNExtension"]));                         
             }
-            result.CurrentRevision = Convert.ToInt32(doc.SelectSingleNode("//logentry").Attributes["revision"].Value);
-            return result;
+            
+
+            var resultado = new List<IUser>();
+
+            foreach (var key in userDict.Keys)
+            {
+                resultado.Add(userDict[key]);
+            }
+
+
+            return resultado;
         }
     }
 }
+

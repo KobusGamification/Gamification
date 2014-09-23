@@ -24,24 +24,24 @@ namespace SVNExtension
             Deleted = 0;
         }
 
-        public void AddMerge()
+        public void AddMerge(int n)
         {
-            Merges += one;
+            Merges += n;
         }
 
-        public void AddModified()
+        public void AddModified(int n)
         {
-            Modified += one;
+            Modified += n;
         }
 
-        public void AddAdd()
+        public void AddAdd(int n)
         {
-            Add += one;
+            Add += n;
         }
 
-        public void AddDeleted()
+        public void AddDeleted(int n)
         {
-            Deleted += one;
+            Deleted += n;
         }
     }
 }

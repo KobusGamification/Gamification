@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace Extension
 {
-    public interface IPlugin
+    public interface IUser
     {
-         List<IUser> Analyze();
+        string Name { get; }
+        IDictionary<string, object> ExtensionPoint {get;}
     }
 }

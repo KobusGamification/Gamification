@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Extension
+namespace SVNExtension
 {
-    public interface IPlugin
+    public static class SVNRevision
     {
-         List<IUser> Analyze();
+        //public IDictionary<string, int> Repos {get; private set;}
+
     }
 }

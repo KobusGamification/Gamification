@@ -8,9 +8,7 @@ namespace LanguageExtension
 {
     public class LanguageBuilder
     {
-        public IDictionary<string, ILanguage> LanguageAttributes { get; private set; }
-
-        
+        public IDictionary<string, ILanguage> LanguageAttributes { get; private set; }        
         public LanguageBuilder()
         {
             LanguageAttributes = new Dictionary<string, ILanguage>();
@@ -19,8 +17,6 @@ namespace LanguageExtension
         public void AddLanguage(LanguageModel model)
         {
             ILanguage value = null;
-
-
             if (!LanguageAttributes.TryGetValue(model.Name, out value))
             {
                 LanguageAttributes.Add(model.Name, new SimpleLanguage(model));
