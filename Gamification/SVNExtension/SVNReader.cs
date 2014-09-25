@@ -23,8 +23,7 @@ namespace SVNExtension
             if (string.IsNullOrWhiteSpace(xmlPath))
             {
                 throw new ArgumentNullException("xmlPath");
-            }
-            LanguageBuilder languageBuilder = null;
+            }            
             var svnModel = new SVNModel();
             var doc = new XmlDocument();
             var xpath = string.Format("//logentry[@revision>'{0}']/paths/path", startRevision);

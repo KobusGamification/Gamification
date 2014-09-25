@@ -24,6 +24,7 @@ namespace SVNExtension
             //Refatorar svn reader diminuir complexidade...
 
             var logFile = @"SVN_Logs_Examples\csprojeditorLog.xml";
+            
             var reader = new SVNReader();
             list = reader.Read(logFile);
             return list;

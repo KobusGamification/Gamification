@@ -42,6 +42,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -50,11 +51,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Config\ConfigSectionHandler.cs" />
+    <Compile Include="Config\Repository.cs" />
     <Compile Include="SVNBuilder.cs" />
+    <Compile Include="SVNManager.cs" />
     <Compile Include="SVNModel.cs" />
     <Compile Include="SVNPlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SVNReader.cs" />
+    <Compile Include="SVNRepository.cs" />
     <Compile Include="SVNRevision.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -72,6 +77,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="BuildTests\BuildSvnRepos.bat" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
