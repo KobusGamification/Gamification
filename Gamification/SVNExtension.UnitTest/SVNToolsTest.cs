@@ -15,7 +15,7 @@ namespace SVNExtension.UnitTest
         [ExpectedException("System.ArgumentNullException")]
         public void ReadNullLog()
         {
-            var reader = new SVNReader();
+            var reader = new SVNReader(0);
             reader.Read(null);
         }
 
@@ -23,7 +23,7 @@ namespace SVNExtension.UnitTest
         public void ReadSimpleLog()
         {
             var xml = @".\SVN_Logs_Examples\SimpleLog.xml";
-            var reader = new SVNReader();
+            var reader = new SVNReader(0);
             var svnPoints = reader.Read(xml)[0];
             Assert.AreEqual(2, ((SVNModel)svnPoints.ExtensionPoint["SVNExtension"]).Modified);
             Assert.AreEqual(0, ((SVNModel)svnPoints.ExtensionPoint["SVNExtension"]).Merges);
@@ -35,9 +35,8 @@ namespace SVNExtension.UnitTest
         public void ReadEmptyRevision()
         {
             var xml = @".\SVN_Logs_Examples\csprojeditorLog.xml";
-            var reader = new SVNReader();
-            var startRevision = 133;
-            var svnPoints = reader.Read(xml, startRevision);
+            var reader = new SVNReader(133);
+            var svnPoints = reader.Read(xml);
             Assert.AreEqual(0, svnPoints.Count);
         }
 
@@ -45,9 +44,8 @@ namespace SVNExtension.UnitTest
         public void ReadValidRevision()
         {
             var xml = @".\SVN_Logs_Examples\csprojeditorLog.xml";
-            var reader = new SVNReader();
-            var startRevision = 132;
-            var svnPoints = reader.Read(xml, startRevision)[0];
+            var reader = new SVNReader(132);
+            var svnPoints = reader.Read(xml)[0];
             Assert.AreEqual(0, ((SVNModel)svnPoints.ExtensionPoint["SVNExtension"]).Merges);
             Assert.AreEqual(4, ((SVNModel)svnPoints.ExtensionPoint["SVNExtension"]).Modified);
             Assert.AreEqual(0, ((SVNModel)svnPoints.ExtensionPoint["SVNExtension"]).Add);
@@ -58,7 +56,7 @@ namespace SVNExtension.UnitTest
         public void VariousModels()
         {
             var xml = @".\SVN_Logs_Examples\csprojeditorLog.xml";
-            var reader = new SVNReader();
+            var reader = new SVNReader(0);
             var svnPoints = reader.Read(xml);
             var buttler = svnPoints.First(p => p.Name.Equals("jenkins.the.buttler"));
             Assert.AreEqual(0, ((SVNModel)buttler.ExtensionPoint["SVNExtension"]).Add);

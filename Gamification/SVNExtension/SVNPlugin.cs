@@ -25,7 +25,7 @@ namespace SVNExtension
 
             var logFile = @"SVN_Logs_Examples\csprojeditorLog.xml";
             
-            var reader = new SVNReader();
+            var reader = new SVNReader(0);
             list = reader.Read(logFile);
             return list;
         }

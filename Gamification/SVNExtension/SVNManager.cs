@@ -9,29 +9,36 @@ using System.IO;
 using System.Text.RegularExpressions;
 namespace SVNExtension
 {
-    public class SVNManager
+    public class SVNManager : IDisposable
     {
+
+        public List<string> Files { get; private set; }
+        private string output = "SVNReports";
 
         public SVNManager()
         {
-
+            Files = new List<string>();
+            if (!Directory.Exists(output))
+            {
+                Directory.CreateDirectory(output);
+            }
         }
 
-        public SVNRepository Generate(string url)
+        public void Generate(string url, int startRevision)
         {
-            
             var fileName = GetFileName(url);
             var cmd = "svn";
-            var args = string.Format("log --xml {0} -v > {1}.xml", url, fileName);
-            StartProcess(cmd, args);
-            //var repos = new SVNRepository(url);
-            return null;
+            var args = string.Format("log --xml -r {0}:HEAD {1} -v", startRevision, url);
+            var content = StartProcess(cmd, args);
+            var filePath = Path.Combine(output, string.Format("{0}_{1}_.xml", fileName, DateTime.Now.ToString("yyyyMMdd-hhmmss")));
+            File.WriteAllText(filePath, content);
+            Files.Add(filePath);
         }
 
         private string GetFileName(string url)
         {
             var result = string.Empty;
-            var pattern = @"(?:.*)(?:/)(?<repos>.*)$";
+            var pattern = @"(?:.*)(?:[/\\])(?<repos>.*)$";
             var matches = Regex.Matches(url, pattern);
             foreach (Match match in matches)
             {
@@ -49,16 +56,28 @@ namespace SVNExtension
             return result;
         }
 
-        private void StartProcess(string cmd, string args)
+        private string StartProcess(string cmd, string args)
         {
+            string result = null;
             using (Process process = new Process())
             {
-                process.StartInfo.FileName = cmd;
-                process.StartInfo.Arguments = args;
-                process.StartInfo.CreateNoWindow = true;
-                process.Start();
-                process.WaitForExit();
+                Process proc = new Process();
+                proc.StartInfo.FileName = cmd;
+                proc.StartInfo.Arguments = args;
+                proc.StartInfo.UseShellExecute = false;
+                proc.StartInfo.CreateNoWindow = true;
+                proc.StartInfo.RedirectStandardOutput = true;
+                proc.Start();
+                StreamReader sr = proc.StandardOutput;
+                result = sr.ReadToEnd();
+                proc.WaitForExit();
             }
+            return result;
+        }
+
+        public void Dispose()
+        {
+            Directory.Delete(output, true);
         }
 
 

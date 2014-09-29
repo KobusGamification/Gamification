@@ -17,9 +17,13 @@ namespace SVNExtension.UnitTest
         {
             string xml = @"SVN_Logs_Examples\SimpleLog.xml";
             var p = new SVNPlugin();
-            var user = p.Analyze();
-            Assert.AreEqual(1, user.Count);
-            Assert.AreEqual("hbsis.leonardo.kobus", user[0].Name);
+            var reader = new SVNReader(0);
+            var users = reader.Read(xml);
+            Assert.AreEqual(1, users.Count);
+            foreach (var user in users)
+            {
+                Assert.AreEqual("hbsis.leonardo.kobus", user.Name);
+           }                     
         }
 
         [Test]
