@@ -33,30 +33,13 @@ namespace SVNExtension.UnitTest
             var builder = new StringBuilder();
             foreach (var user in users)
             {
-                /*
-                Assert.AreEqual("leonardo.kobus", user.Name);
-                
+                var model = (SVNModel)user.ExtensionPoint["SVNExtension"];
+                Assert.AreEqual("leonardo.kobus", user.Name);                
                 Assert.AreEqual(20, model.Add);
                 Assert.AreEqual(0, model.Deleted);
                 Assert.AreEqual(0, model.Merges);
-                Assert.AreEqual(0, model.Modified);                */
-
-                var model = (SVNModel)user.ExtensionPoint["SVNExtension"];
-                var language = (LanguageExtension.LanguageBuilder)user.ExtensionPoint["LanguageExtension"];
-                builder.AppendLine("Name : " + user.Name);
-                builder.AppendLine("Add : " + model.Add);
-                builder.AppendLine("Deleted : " + model.Deleted);
-                builder.AppendLine("Merges : " + model.Merges);
-                builder.AppendLine("Modifed : " + model.Modified);
-                builder.AppendLine("Language");
-                foreach (var key in language.LanguageAttributes.Keys)
-                {
-                    builder.AppendLine(key + " : " + language.LanguageAttributes[key].Count);
-                }
-                builder.AppendLine();
-            }
-
-            File.WriteAllText("C:\\result.txt", builder.ToString());
+                Assert.AreEqual(0, model.Modified);               
+            }        
 
         }
 
