@@ -6,7 +6,7 @@ using System.ComponentModel.Composition;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Configuration;
 namespace SVNExtension
 {
     [Export(typeof(IPlugin))]
@@ -15,19 +15,26 @@ namespace SVNExtension
         public List<IUser> Analyze()
         {
             var list = new List<IUser>();
-            
-            //TODO: Criar a classe SVN Revision
-            // Combinar o arquivo de configurações com dict
-            // associar cada revisão com sua ultima revisão vista.
-
-
-            //Refatorar svn reader diminuir complexidade...
-
-            var logFile = @"SVN_Logs_Examples\csprojeditorLog.xml";
-            
-            var reader = new SVNReader(0);
-            list = reader.Read(logFile);
+            var logs = GetLogs();
+            foreach (var log in logs)
+            {
+                var reader = new SVNReader(0);
+                list = reader.Read(log);
+            }
             return list;
+        }
+
+        private List<string> GetLogs()
+        {
+            SVNManager manager = new SVNManager();
+
+            var configs = (SVNConfiguration) ConfigurationManager.GetSection("SVN");
+
+            foreach(SVNConfiguration.Repository repo in configs.Repos)
+            {
+                manager.Generate(repo.Url, 0);
+            }            
+            return manager.Files;
         }
     }
 }

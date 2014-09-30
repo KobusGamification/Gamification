@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using System.Diagnostics;
 using System.Configuration;
+using SVNExtension;
 namespace SVNExtension.UnitTest
 {
     [TestFixture]
@@ -17,7 +18,7 @@ namespace SVNExtension.UnitTest
         public void SetUp()
         {
             using (var process = new Process())
-            {
+            {            
                 process.StartInfo.FileName = "powershell.exe";
                 process.StartInfo.Arguments = ".\\BuildTests\\BuildSvnRepos.ps1";
                 process.StartInfo.CreateNoWindow = true;
@@ -29,7 +30,7 @@ namespace SVNExtension.UnitTest
 
         [Test]
         public void GetReposLogsTest()
-        {
+        {           
             var url = @"file:///C:/users/leonardo.kobus/desktop/games/gamification/SVNExtension.UnitTest/bin/Debug/RepositorioNET";
             int initialRelease = 0;
             using (var manager = new SVNManager())

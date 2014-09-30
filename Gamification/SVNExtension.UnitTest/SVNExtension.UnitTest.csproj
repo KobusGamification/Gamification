@@ -65,13 +65,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="SVNManagerTest.cs" />
+    <Compile Include="SVNPluginTest.cs" />
     <Compile Include="SVNReadersTest.cs" />
     <Compile Include="SVNResultUserTest.cs" />
     <Compile Include="SVNToolsTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="SVNExtension.UnitTest.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </None>
     <None Include="BuildTests\BuildSvnRepos.ps1">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -81,6 +85,10 @@
     <ProjectReference Include="..\Extension\Extension.csproj">
       <Project>{244b5308-e529-442c-87c3-60bafc961372}</Project>
       <Name>Extension</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LanguageExtension\LanguageExtension.csproj">
+      <Project>{f13200d8-82d5-4fae-afd3-68c24b11622f}</Project>
+      <Name>LanguageExtension</Name>
     </ProjectReference>
     <ProjectReference Include="..\SVNExtension\SVNExtension.csproj">
       <Project>{52864a8f-c25f-408c-80ec-21d779860c58}</Project>
