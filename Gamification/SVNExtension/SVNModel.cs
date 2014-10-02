@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using LanguageExtension;
-namespace SVNExtension
+﻿namespace SVNExtension
 {
     public class SVNModel
     {
@@ -13,8 +7,7 @@ namespace SVNExtension
         public int Modified { get; private set; }
         public int Add { get; private set; }
         public int Deleted { get; private set; }
-        public int CurrentRevision { get; set; }
-        private int one = 1;
+        public int CurrentRevision { get; set; }        
 
         public SVNModel()
         {

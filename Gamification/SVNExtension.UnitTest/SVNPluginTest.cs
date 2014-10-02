@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using NUnit.Framework;
 using System.IO;
+using DatabaseAccess;
 namespace SVNExtension.UnitTest
 {
     [TestFixture]
@@ -40,7 +41,13 @@ namespace SVNExtension.UnitTest
                 Assert.AreEqual(0, model.Merges);
                 Assert.AreEqual(0, model.Modified);               
             }        
+        }
 
+        [Test]
+        public void SomeTest()
+        {
+
+            SVNExtension.DB.DBUtils.ReposExists("Test");
         }
 
     }

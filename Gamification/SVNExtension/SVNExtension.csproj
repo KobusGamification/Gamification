@@ -51,6 +51,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DB\DBUtils.cs" />
+    <Compile Include="Model\SVNRepository.cs" />
     <Compile Include="SVNBuilder.cs" />
     <Compile Include="SVNConfiguration.cs" />
     <Compile Include="SVNManager.cs" />

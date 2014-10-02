@@ -13,7 +13,9 @@ namespace SVNExtension.UnitTest
     [TestFixture]
     public class SVNManagerTest
     {
-
+        /// <summary>
+        /// Testes irão mudar pois deverão pegar inforamações do BD (pensar num mock para o database)
+        /// </summary>
         [SetUp]
         public void SetUp()
         {
