@@ -62,7 +62,33 @@ namespace LanguageExtension.Tests
             Assert.AreEqual("Folder", model.File);
         }
 
+        [Test]
+        public void MergeTest()
+        {
+            var expectedBuilder = new LanguageBuilder();
+            expectedBuilder.AddLanguage(new LanguageModel("py", "file1.py"));
+            expectedBuilder.AddLanguage(new LanguageModel("py", "file2.py"));
+            expectedBuilder.AddLanguage(new LanguageModel("cs", "file1.cs"));
+            expectedBuilder.AddLanguage(new LanguageModel("java", "file1.java"));
 
-        public object LanguageModel { get; set; }
+            var builder1 = new LanguageBuilder();
+            builder1.AddLanguage(new LanguageModel("py", "file1.py"));
+            builder1.AddLanguage(new LanguageModel("py", "file2.py"));
+
+            var builder2 = new LanguageBuilder();
+            builder2.AddLanguage(new LanguageModel("cs", "file1.cs"));
+            builder2.AddLanguage(new LanguageModel("java", "file1.java"));
+
+            var resultMerge = builder1.Merge(builder2);
+            var builderMerge = (LanguageBuilder)resultMerge;
+
+            Assert.AreEqual(expectedBuilder.LanguageAttributes["py"].Count, builderMerge.LanguageAttributes["py"].Count);
+            Assert.AreEqual(expectedBuilder.LanguageAttributes["java"].File[0], builderMerge.LanguageAttributes["java"].File[0]);
+            Assert.AreEqual(expectedBuilder.LanguageAttributes["cs"].File[0], builderMerge.LanguageAttributes["cs"].File[0]);
+
+
+
+        }
+
     }
 }

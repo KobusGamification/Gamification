@@ -66,7 +66,8 @@ namespace LanguageExtension
 
         public IExtension Merge(IExtension extension)
         {
-            return (LanguageBuilder)extension;
+            AddBuilder((LanguageBuilder)extension);
+            return this;
         }
 
     }
