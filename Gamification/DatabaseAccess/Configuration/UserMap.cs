@@ -9,20 +9,20 @@ namespace DatabaseAccess.Configuration
 {
     public class UserMap : ConfigurationElement
     {
-        [ConfigurationProperty("mainName", IsKey = true, IsRequired = true)]
+        [ConfigurationProperty("mainname", IsKey = true, IsRequired = true)]
         public string MainName
         {
             get
             {
-                return base["mainName"] as string;
+                return base["mainname"] as string;
             }
             set
             {
-                base["mainName"] = value;
+                base["mainname"] = value;
             }
         }
 
-        [ConfigurationProperty("subNames", IsKey = true, IsRequired = true)]
+        [ConfigurationProperty("subnames", IsKey = true, IsRequired = true)]
         public string SubNames
         {
             get

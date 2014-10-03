@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Configuration;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using NUnit.Framework;
@@ -46,6 +47,13 @@ namespace SVNExtension.UnitTest
         [Test]
         public void SomeTest()
         {
+
+            var config = (DatabaseAccess.Configuration.MapUserConfiguration)ConfigurationManager.GetSection("databasemap");
+
+            foreach (DatabaseAccess.Configuration.UserMap user in config.Users)
+            {
+                string a = "oi";
+            }
 
             SVNExtension.DB.DBUtils.ReposExists("Test");
         }
