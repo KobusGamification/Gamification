@@ -11,6 +11,6 @@ namespace Extension
     {
         ObjectId Id { get; }
         string Name { get; }
-        IDictionary<string, object> ExtensionPoint {get;}
+        IDictionary<string, IExtension> ExtensionPoint {get;}
     }
 }

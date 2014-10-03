@@ -47,7 +47,6 @@ namespace SVNExtension.UnitTest
         [Test]
         public void SomeTest()
         {
-
             var config = (DatabaseAccess.Configuration.MapUserConfiguration)ConfigurationManager.GetSection("databasemap");
 
             foreach (DatabaseAccess.Configuration.UserMap user in config.Users)

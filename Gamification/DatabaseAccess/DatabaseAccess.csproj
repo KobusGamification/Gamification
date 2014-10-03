@@ -53,6 +53,7 @@
     <Compile Include="Configuration\UserMap.cs" />
     <Compile Include="Configuration\UserMaps.cs" />
     <Compile Include="DatabaseManager.cs" />
+    <Compile Include="DatabaseUsers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

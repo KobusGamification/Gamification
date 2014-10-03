@@ -1,6 +1,7 @@
-﻿namespace SVNExtension
+﻿using Extension;
+namespace SVNExtension
 {
-    public class SVNModel
+    public class SVNModel : IExtension 
     {
 
         public int Merges { get; private set; }
@@ -35,6 +36,11 @@
         public void AddDeleted(int n)
         {
             Deleted += n;
+        }
+
+        public IExtension Merge(IExtension model)
+        {
+            return SVNBuilder.AddModel(this, (SVNModel) model);
         }
     }
 }

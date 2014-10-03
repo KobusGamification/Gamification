@@ -28,8 +28,7 @@ namespace SVNExtension.UnitTest
 
         [Test]
         public void TestMultipliesUser()
-        {
-            string xml = @"SVN_Logs_Examples\csprojeditorLog.xml";
+        {            
             var plugin = new SVNPlugin();
             var user = plugin.Analyze();
             var result = user.First(p => p.Name.Equals("hbsis.leonardo.kobus"));

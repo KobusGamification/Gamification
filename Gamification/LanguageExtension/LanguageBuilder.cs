@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-
+using Extension;
 namespace LanguageExtension
 {
-    public class LanguageBuilder
+    public class LanguageBuilder : IExtension
     {
         public IDictionary<string, ILanguage> LanguageAttributes { get; private set; }        
 
@@ -63,5 +63,11 @@ namespace LanguageExtension
             }
             return new LanguageModel(name, file);
         }
+
+        public IExtension Merge(IExtension extension)
+        {
+            return (LanguageBuilder)extension;
+        }
+
     }
 }
