@@ -7,7 +7,7 @@ using System.Configuration;
 
 namespace SVNExtension
 {
-    public class SVNConfiguration : ConfigurationSection
+    public class SVNConfiguration : ConfigurationSection    
     {
         [ConfigurationProperty("repositorys", IsRequired = true)]
         public Repositorys Repos { 

@@ -9,6 +9,7 @@ namespace LanguageExtension
     public class LanguageBuilder
     {
         public IDictionary<string, ILanguage> LanguageAttributes { get; private set; }        
+
         public LanguageBuilder()
         {
             LanguageAttributes = new Dictionary<string, ILanguage>();
@@ -24,6 +25,26 @@ namespace LanguageExtension
             else
             {
                 LanguageAttributes[model.Name].Add(model);
+            }
+        }
+
+        public void AddBuilder(LanguageBuilder currentLang)
+        {
+            foreach (var key in currentLang.LanguageAttributes.Keys)
+            {
+                ILanguage value = null;
+                if (currentLang.LanguageAttributes.TryGetValue(key, out value))
+                {
+                    for (int i = 0; i < currentLang.LanguageAttributes[key].File.Count; i++)
+                    {
+                        var langModel = new LanguageModel(key, currentLang.LanguageAttributes[key].File[i]);
+                        AddLanguage(langModel);
+                    }
+                }
+                else
+                {
+                    LanguageAttributes.Add(key, currentLang.LanguageAttributes[key]);                    
+                }
             }
         }
 

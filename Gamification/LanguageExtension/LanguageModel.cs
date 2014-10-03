@@ -15,7 +15,6 @@ namespace LanguageExtension
         public LanguageModel(string name, string file )
         {
             Name = name;
-
             File = file;
         }
 

@@ -4,6 +4,7 @@ using System.Configuration;
 using Extension;
 using SVNExtension.Model;
 using SVNExtension.DB;
+using LanguageExtension;
 namespace SVNExtension
 {
     [Export(typeof(IPlugin))]
@@ -64,7 +65,6 @@ namespace SVNExtension
                 }
             }
             UpdateReposytorys();
-            //push database
             return list;
         }
 
@@ -79,8 +79,11 @@ namespace SVNExtension
             {
                 var savedUser = DBUtils.GetUser(user.Name);
                 var svnKey = "SVNExtension";
+                var langKey = "LanguageExtension";
                 var model = SVNBuilder.AddModel((SVNModel)user.ExtensionPoint[svnKey], (SVNModel)savedUser.ExtensionPoint[svnKey]);
                 savedUser.ExtensionPoint[svnKey] = model;
+                var currentLang = (LanguageBuilder) user.ExtensionPoint[langKey];
+                ((LanguageBuilder) savedUser.ExtensionPoint[langKey]).AddBuilder(currentLang);                                               
                 DBUtils.UpdateUser(savedUser);
             }
             else
