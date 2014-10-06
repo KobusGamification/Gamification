@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Extension
 {
+    
     public interface IPlugin
     {
-         List<IUser> Analyze();
+         void Analyze();
+         void LoadDBMaps();
     }
 }

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Configuration;
-using System.Threading.Tasks;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using NUnit.Framework;
-using System.IO;
 using DatabaseAccess;
+using Extension;
+using SVNExtension.Model;
+using System;
 namespace SVNExtension.UnitTest
 {
     [TestFixture]
@@ -17,6 +13,7 @@ namespace SVNExtension.UnitTest
         [SetUp]
         public void SetUp()
         {
+            CleanDatabase();
             using (var process = new Process())
             {
                 process.StartInfo.FileName = "powershell.exe";
@@ -27,35 +24,38 @@ namespace SVNExtension.UnitTest
             }
         }
 
+        private void CleanDatabase()
+        {
+            var dbManager = new DatabaseManager();
+            var testDatabase = dbManager.GetDatabase();
+            testDatabase.DropCollection(typeof(IUser).Name);
+            testDatabase.DropCollection(typeof(SVNRepository).Name);
+        }
+
         [Test]
         public void TestSimplyAnalyze()
-        {
+        {            
+            var dbUsers = new DatabaseUsers();            
             var plugin = new SVNPlugin();
-            var users = plugin.Analyze();
-            var builder = new StringBuilder();
-            foreach (var user in users)
+            new LanguageExtension.LanguagePlugin().LoadDBMaps();            
+            plugin.LoadDBMaps();
+            plugin.Analyze();
+            var manager = new DatabaseManager();
+            var db = manager.GetDatabase();
+            var collection = db.GetCollection<IUser>(typeof(IUser).Name);
+            foreach (var user in collection.FindAll())
             {
-                var model = (SVNModel)user.ExtensionPoint["SVNExtension"];
-                Assert.AreEqual("leonardo.kobus", user.Name);                
-                Assert.AreEqual(20, model.Add);
-                Assert.AreEqual(0, model.Deleted);
-                Assert.AreEqual(0, model.Merges);
-                Assert.AreEqual(0, model.Modified);               
-            }        
-        }
-
-        [Test]
-        public void SomeTest()
-        {
-            var config = (DatabaseAccess.Configuration.MapUserConfiguration)ConfigurationManager.GetSection("databasemap");
-
-            foreach (DatabaseAccess.Configuration.UserMap user in config.Users)
-            {
-                string a = "oi";
+                Assert.AreEqual(Environment.UserName, user.Name);
+                Assert.AreEqual(20, ((SVNModel)user.ExtensionPoint["SVNExtension"]).Add);
+                Assert.AreEqual(0, ((SVNModel)user.ExtensionPoint["SVNExtension"]).Modified);
+                Assert.AreEqual(0, ((SVNModel)user.ExtensionPoint["SVNExtension"]).Deleted);
             }
 
-            SVNExtension.DB.DBUtils.ReposExists("Test");
+            var repos = db.GetCollection<SVNRepository>(typeof(SVNRepository).Name);
+            foreach (var repo in repos.FindAll())
+            {
+                Assert.AreEqual(2, repo.CurrentVersion);
+            }
         }
-
     }
 }

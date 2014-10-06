@@ -17,6 +17,10 @@ namespace Extension
         {
             foreach (var plugin in plugins)
             {
+                plugin.LoadDBMaps();
+            }
+            foreach (var plugin in plugins)
+            {
                 plugin.Analyze();
             }
         }

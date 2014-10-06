@@ -5,6 +5,8 @@ using Extension;
 using SVNExtension.Model;
 using SVNExtension.DB;
 using LanguageExtension;
+using MongoDB.Bson.Serialization;
+using System;
 namespace SVNExtension
 {
     [Export(typeof(IPlugin))]
@@ -46,7 +48,26 @@ namespace SVNExtension
             return manager.Files;
         }
 
-        public List<IUser> Analyze()
+        public void LoadDBMaps()
+        {
+            foreach (var type in GetRegisteredTypes())
+            {
+                if (!BsonClassMap.IsClassMapRegistered(type))
+                {
+                    BsonClassMap.LookupClassMap(type);
+                }
+            }            
+        }
+
+        private List<Type> GetRegisteredTypes()
+        {
+            var types = new List<Type>();
+            types.Add(typeof(SVNModel));
+            types.Add(typeof(DefaultUser));
+            return types;
+        }
+
+        public void Analyze()
         {
             var list = new List<IUser>();
             var logs = GetLogs();
@@ -64,8 +85,7 @@ namespace SVNExtension
                     UpdateUser(user);       
                 }
             }
-            UpdateReposytorys();
-            return list;
+            UpdateReposytorys();            
         }
 
         private void UpdateReposytorys()
@@ -79,11 +99,9 @@ namespace SVNExtension
             {
                 var savedUser = DBUtils.GetUser(user.Name);
                 var svnKey = "SVNExtension";
-                var langKey = "LanguageExtension";
-                var model = SVNBuilder.AddModel((SVNModel)user.ExtensionPoint[svnKey], (SVNModel)savedUser.ExtensionPoint[svnKey]);
-                savedUser.ExtensionPoint[svnKey] = model;
-                var currentLang = (LanguageBuilder) user.ExtensionPoint[langKey];
-                ((LanguageBuilder) savedUser.ExtensionPoint[langKey]).AddBuilder(currentLang);                                               
+                var langKey = "LanguageExtension";                               
+                savedUser.ExtensionPoint[svnKey] = ((SVNModel)savedUser.ExtensionPoint[svnKey]).Merge(user.ExtensionPoint[svnKey]);
+                savedUser.ExtensionPoint[langKey] = ((LanguageBuilder)savedUser.ExtensionPoint[langKey]).Merge(user.ExtensionPoint[langKey]);                                                                    
                 DBUtils.UpdateUser(savedUser);
             }
             else

@@ -79,7 +79,7 @@ namespace SVNExtension
                     result.Add(userDict[key]);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 //log msg
                 return result;

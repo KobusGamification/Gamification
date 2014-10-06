@@ -24,21 +24,6 @@ namespace SVNExtension.UnitTest
             {
                 Assert.AreEqual("hbsis.leonardo.kobus", user.Name);
            }                     
-        }
-
-        [Test]
-        public void TestMultipliesUser()
-        {            
-            var plugin = new SVNPlugin();
-            var user = plugin.Analyze();
-            var result = user.First(p => p.Name.Equals("hbsis.leonardo.kobus"));
-            Assert.AreEqual("hbsis.leonardo.kobus", result.Name);
-            result = user.First(p => p.Name.Equals("jenkins.the.buttler"));
-            Assert.AreEqual("jenkins.the.buttler", result.Name);
-            Assert.AreEqual(2, user.Count);
-        }
-
-
-        
+        }        
     }
 }

@@ -8,6 +8,7 @@ using MongoDB;
 using Extension;
 using MongoDB.Bson;
 using MongoDB.Driver.Builders;
+using System.Configuration;
 namespace DatabaseAccess
 {
     public class DatabaseManager
@@ -17,8 +18,8 @@ namespace DatabaseAccess
 
         public DatabaseManager()
         {
-            ConnectionString = "mongodb://localhost";
-            Database = "Teste";
+            ConnectionString = ConfigurationManager.AppSettings["MongoConnection"];
+            Database = ConfigurationManager.AppSettings["MongoDatabase"];
         }
 
         public void Insert<T>(T document)
@@ -35,11 +36,19 @@ namespace DatabaseAccess
             collection.Save<T>(document);
         }
 
+        public void Delete<T>(ObjectId id)
+        {
+            var database = GetDatabase();
+            var collection = database.GetCollection<T>(typeof(T).Name);
+            var query = Query.EQ("_id", id);
+            collection.Remove(query);            
+        }
+
         public T Get<T>(ObjectId id)
         {
             var database = GetDatabase();
             var collection = database.GetCollection<T>(typeof(T).Name);
-            var query = Query.EQ("Id", id);
+            var query = Query.EQ("_id", id);
             var document = collection.FindOne(query);
             return document;
         }
@@ -49,6 +58,7 @@ namespace DatabaseAccess
             string conexaoMongo = ConnectionString;
             var client = new MongoClient(conexaoMongo);
             var server = client.GetServer();
+            
             return server.GetDatabase(Database);
         }
 
