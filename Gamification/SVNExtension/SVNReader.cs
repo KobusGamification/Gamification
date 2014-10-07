@@ -13,7 +13,6 @@ namespace SVNExtension
 
         public int CurrentRevision { get; private set; }
 
-
         public SVNReader(int startRevision)
         {
             CurrentRevision = startRevision;
@@ -79,7 +78,7 @@ namespace SVNExtension
                     result.Add(userDict[key]);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //log msg
                 return result;

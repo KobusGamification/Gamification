@@ -13,5 +13,6 @@ namespace Extension
         ObjectId Id { get; }
         string Name { get; set; }
         IDictionary<string, IExtension> ExtensionPoint {get;}
+        IDictionary<string, Experience> ExperiencePoints { get; }
     }
 }

@@ -11,5 +11,6 @@ namespace Extension
     {
          void Analyze();
          void LoadDBMaps();
+         void Compute();
     }
 }

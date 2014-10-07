@@ -18,6 +18,7 @@ namespace DatabaseAccess
         {
 
         }
+
         public void VerifyAndMerge()
         {         
             var dbManager = new DatabaseManager();

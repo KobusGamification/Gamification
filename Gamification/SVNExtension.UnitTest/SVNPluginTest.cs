@@ -1,19 +1,24 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
+using System.Linq;
 using NUnit.Framework;
 using DatabaseAccess;
 using Extension;
 using SVNExtension.Model;
-using System;
+using LanguageExtension;
+using MongoDB.Bson.Serialization;
 namespace SVNExtension.UnitTest
 {
     [TestFixture]
     public class SVNPluginTest
     {
-
-        [SetUp]
+        [TestFixtureSetUp]
         public void SetUp()
         {
-            CleanDatabase();
+            if (!BsonClassMap.IsClassMapRegistered(typeof(DefaultUser)))
+            {
+                BsonClassMap.LookupClassMap(typeof(DefaultUser));
+            }            
             using (var process = new Process())
             {
                 process.StartInfo.FileName = "powershell.exe";
@@ -22,6 +27,13 @@ namespace SVNExtension.UnitTest
                 process.Start();
                 process.WaitForExit(20000);
             }
+
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            CleanDatabase();
         }
 
         private void CleanDatabase()
@@ -37,6 +49,7 @@ namespace SVNExtension.UnitTest
         {            
             var dbUsers = new DatabaseUsers();            
             var plugin = new SVNPlugin();
+            var plugin2 = new LanguageExtension.LanguagePlugin();
             new LanguageExtension.LanguagePlugin().LoadDBMaps();            
             plugin.LoadDBMaps();
             plugin.Analyze();
@@ -56,6 +69,38 @@ namespace SVNExtension.UnitTest
             {
                 Assert.AreEqual(2, repo.CurrentVersion);
             }
+        }
+
+        [Test]
+        public void LevelUserUpTest()
+        {
+            string fileLevel = ".\\Experience\\UserLevel.prop";
+            var model = new SVNModel();
+            model.AddAdd(10);
+            model.AddModified(5);                        
+            var svnExp = new SVNExperience("TestSVNModel", fileLevel);
+            var exp = new Experience("TestUser", fileLevel);
+            svnExp.AddModel(model);
+            exp.AddPluginExperience(svnExp);            
+            Assert.AreEqual(2, exp.Level);
+            Assert.AreEqual(15, exp.ExperiencePoints);
+        }
+
+        [Test]
+        public void LevelSvnUpTest()
+        {
+            string fileLevel = ".\\Experience\\UserLevel.prop";
+            var model = new SVNModel();
+            model.AddAdd(1000);
+            model.AddModified(10000);
+            model.AddDeleted(600);
+            var svnExp = new SVNExperience("TestUser", fileLevel);
+            svnExp.AddModel(model);
+            Assert.AreEqual(17, svnExp.Level);
+            Assert.AreEqual(11600, svnExp.ExperiencePoints);
+            Assert.AreEqual("TestUser", svnExp.Name);
+
+
         }
     }
 }

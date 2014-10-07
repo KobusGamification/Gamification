@@ -37,6 +37,11 @@ namespace SVNExtension
             }
         }
 
+        public void Compute()
+        {
+            throw new NotImplementedException();
+        }
+
         private List<string> GetLogs()
         {
             SVNManager manager = new SVNManager();

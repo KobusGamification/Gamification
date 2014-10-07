@@ -14,6 +14,11 @@ namespace LanguageExtension
             return;
         }
 
+        public void Compute()
+        {
+            throw new NotImplementedException();
+        }
+
         public void LoadDBMaps()
         {
             var types = GetRegisteredTypes();
