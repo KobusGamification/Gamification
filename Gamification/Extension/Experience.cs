@@ -12,7 +12,7 @@ namespace Extension
         public string Name { get; private set; }
         public Int64 ExperiencePoints { get; private set; }
         public int Level { get; private set; }
-        private string LevelPropertiesFile{get; set;}
+        protected string LevelPropertiesFile{get; set;}
 
         public Experience(string name, string lvlPropFile)
         {          
@@ -28,7 +28,7 @@ namespace Extension
             CalculateLevel();
         }
 
-        private void CalculateLevel()
+        protected void CalculateLevel()
         {           
             var currentLevel= 0;
             using (var reader = new StreamReader(LevelPropertiesFile))
@@ -36,7 +36,7 @@ namespace Extension
                 while (!reader.EndOfStream)
                 {
                     var levelExp = Convert.ToInt64(reader.ReadLine().Split('=')[1]);                    
-                    if (ExperiencePoints > levelExp)
+                    if (ExperiencePoints >= levelExp)
                     {
                         currentLevel++;
                     }

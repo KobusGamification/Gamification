@@ -99,8 +99,27 @@ namespace SVNExtension.UnitTest
             Assert.AreEqual(17, svnExp.Level);
             Assert.AreEqual(11600, svnExp.ExperiencePoints);
             Assert.AreEqual("TestUser", svnExp.Name);
+        }
 
+        [Test]
+        public void DatabaseRegistryLevelUpTest()
+        {
+            var plugin = new SVNPlugin();
+            plugin.Analyze();
+            plugin.Compute();
+            var db = new DatabaseManager();
+            var database = db.GetDatabase();
+            var collection = database.GetCollection<IUser>(typeof(IUser).Name);
+            foreach (var user in collection.FindAll())
+            {
+                var exp = user.ExperiencePoints[typeof(SVNExperience).Name];                
+                Assert.AreEqual(Environment.UserName, exp.Name);
+                Assert.AreEqual(2, exp.Level);
+                Assert.AreEqual(20, exp.ExperiencePoints);
+                
+            }
 
+            
         }
     }
 }

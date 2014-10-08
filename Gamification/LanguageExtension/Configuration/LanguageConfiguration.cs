@@ -9,6 +9,6 @@ namespace LanguageExtension.Configuration
 {
     public class LanguageConfiguration : ConfigurationSection
     {
-        //TODO: config language
+        
     }
 }

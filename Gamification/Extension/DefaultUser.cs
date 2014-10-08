@@ -23,6 +23,7 @@ namespace Extension
             }            
             Name = name;
             ExtensionPoint = new Dictionary<string, IExtension>();
+            ExperiencePoints = new Dictionary<string, Experience>();
         }
 
     }

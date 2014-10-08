@@ -95,9 +95,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="LanguageBuilderTests.cs" />
+    <Compile Include="LanguageExperienceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Contents\Level\lvlUpTest.prop">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

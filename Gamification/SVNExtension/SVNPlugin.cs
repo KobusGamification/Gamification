@@ -39,8 +39,25 @@ namespace SVNExtension
 
         public void Compute()
         {
-            throw new NotImplementedException();
+            var users = DBUtils.GetAllUsers();
+            foreach (var user in users)
+            {
+                var model = (SVNModel)user.ExtensionPoint["SVNExtension"];
+                if (!user.ExperiencePoints.ContainsKey(typeof(SVNExperience).Name))
+                {                    
+                    user.ExperiencePoints.Add(typeof(SVNExperience).Name, null);
+                }
+
+                var exp = new SVNExperience(user.Name, ".\\Experience\\UserLevel.prop");
+                exp.AddModel(model);
+                user.ExperiencePoints[typeof(SVNExperience).Name] = exp;
+                DBUtils.UpdateUser(user);
+            }
+
+            
         }
+
+        
 
         private List<string> GetLogs()
         {
@@ -69,6 +86,7 @@ namespace SVNExtension
             var types = new List<Type>();
             types.Add(typeof(SVNModel));
             types.Add(typeof(DefaultUser));
+            types.Add(typeof(SVNExperience));
             return types;
         }
 

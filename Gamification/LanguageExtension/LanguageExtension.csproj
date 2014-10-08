@@ -86,6 +86,7 @@
     <Compile Include="Configuration\LanguageConfiguration.cs" />
     <Compile Include="ILanguage.cs" />
     <Compile Include="LanguageBuilder.cs" />
+    <Compile Include="LanguageExperience.cs" />
     <Compile Include="LanguageModel.cs" />
     <Compile Include="LanguagePlugin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -98,6 +99,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Configuration\LanguageConfiguration.prop" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

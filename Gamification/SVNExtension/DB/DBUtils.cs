@@ -55,6 +55,14 @@ namespace SVNExtension.DB
             db.Update<IUser>(user);
         }
 
+        public static List<IUser> GetAllUsers()
+        {                        
+            return new DatabaseManager()
+                .GetDatabase()
+                .GetCollection<IUser>(typeof(IUser).Name)
+                .FindAll()
+                .ToList<IUser>();
+        }
 
 
         internal static bool UserExists(IUser user)
