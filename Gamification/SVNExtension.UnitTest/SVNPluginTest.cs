@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using NUnit.Framework;
 using DatabaseAccess;
 using Extension;
 using SVNExtension.Model;
 using LanguageExtension;
 using MongoDB.Bson.Serialization;
+using NUnit.Framework;
 namespace SVNExtension.UnitTest
 {
     [TestFixture]
@@ -118,8 +118,34 @@ namespace SVNExtension.UnitTest
                 Assert.AreEqual(20, exp.ExperiencePoints);
                 
             }
+        }
 
+        /// <summary>
+        /// this tests must be here because language plugin depends on other plugins
+        /// to insert he dates
+        /// </summary>
+        [Test]
+        public void languagePluginlvlUpVerifyDatabaseInsertTest()
+        {
+            var plugin = new SVNPlugin();
+            plugin.Analyze();            
+
+            var langPlugin = new LanguagePlugin();
+            langPlugin.Compute();
+
+            var collection = new DatabaseManager()
+                .GetDatabase()
+                .GetCollection<IUser>(typeof(IUser).Name);
+
+            foreach (var user in collection.FindAll())
+            {
+                var exp = user.ExperiencePoints[typeof(LanguageExperience).Name];
+                Assert.AreEqual(Environment.UserName, exp.Name);
+                Assert.AreEqual(2, exp.Level);
+                Assert.AreEqual(20, exp.ExperiencePoints);
+            }
             
+
         }
     }
 }

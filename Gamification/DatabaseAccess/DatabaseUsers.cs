@@ -19,6 +19,15 @@ namespace DatabaseAccess
 
         }
 
+        public static List<IUser> GetAllUsers()
+        {
+            return new DatabaseManager()
+                .GetDatabase()
+                .GetCollection<IUser>(typeof(IUser).Name)
+                .FindAll()
+                .ToList<IUser>();
+        }
+
         public void VerifyAndMerge()
         {         
             var dbManager = new DatabaseManager();

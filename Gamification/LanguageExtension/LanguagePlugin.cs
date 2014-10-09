@@ -5,10 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Extension;
 using MongoDB.Bson.Serialization;
+using DatabaseAccess;
 namespace LanguageExtension
 {
     public class LanguagePlugin : IPlugin
     {
+        /// <summary>
+        /// Others plugin must analyze this extension.
+        /// </summary>
         public void Analyze()
         {
             return;
@@ -16,7 +20,20 @@ namespace LanguageExtension
 
         public void Compute()
         {
-            throw new NotImplementedException();
+            var fileprop = ".\\Experience\\UserLevel.prop";
+            var users = DatabaseUsers.GetAllUsers();
+            var db = new DatabaseManager();
+            foreach (var user in users)
+            {
+                if (!user.ExperiencePoints.ContainsKey(typeof(LanguageExperience).Name))
+                {
+                    user.ExperiencePoints.Add(typeof(LanguageExperience).Name, null);
+                }
+                var exp = new LanguageExperience(user.Name, fileprop);
+                exp.AddModel((LanguageBuilder)user.ExtensionPoint["LanguageExtension"]);
+                user.ExperiencePoints[typeof(LanguageExperience).Name] = exp;
+                db.Update<IUser>(user);
+            }
         }
 
         public void LoadDBMaps()
