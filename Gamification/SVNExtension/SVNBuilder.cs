@@ -30,8 +30,7 @@ namespace SVNExtension
         public static SVNModel AddModel(SVNModel m1, SVNModel m2)
         {
             m2.AddAdd(m1.Add);
-            m2.AddDeleted(m1.Deleted);
-            m2.AddMerge(m1.Merges);
+            m2.AddDeleted(m1.Deleted);            
             m2.AddModified(m1.Modified);
             return m2;
         }

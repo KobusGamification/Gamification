@@ -99,6 +99,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="LanguageExtensionConfiguration\KnownLanguages.prop">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Contents\Level\lvlUpTest.prop">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

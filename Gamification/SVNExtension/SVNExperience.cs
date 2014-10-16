@@ -8,8 +8,8 @@ namespace SVNExtension
 {
     public class SVNExperience : Experience
     {
-        public SVNExperience(string name, string lvlFileProp)
-            : base(name, lvlFileProp)
+        public SVNExperience(string name, string lvlFileProp, string alias)
+            : base(name, lvlFileProp, alias)
         {
                        
         }

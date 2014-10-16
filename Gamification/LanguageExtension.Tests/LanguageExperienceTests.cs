@@ -22,7 +22,7 @@ namespace LanguageExtension.Tests
             lang.Add(languageModel);
             builder.LanguageAttributes.Add("cs", lang);
 
-            var expLang = new LanguageExperience("Teste", @".\Contents\Level\lvlUpTest.prop");
+            var expLang = new LanguageExperience("Teste", @".\Contents\Level\lvlUpTest.prop", "Language Points");
             expLang.AddModel(builder);
 
             Assert.AreEqual(2, expLang.Level);

@@ -22,9 +22,9 @@ namespace LanguageExtension.Tests
             builder.AddLanguage(model);
             model = new LanguageModel("py", "program.py");
             builder.AddLanguage(model);
-            Assert.AreEqual(2, builder.LanguageAttributes["cs"].Count);
-            Assert.AreEqual(1, builder.LanguageAttributes["java"].Count);
-            Assert.AreEqual(1, builder.LanguageAttributes["py"].Count);
+            Assert.AreEqual(2, builder.LanguageAttributes["C#"].Count);
+            Assert.AreEqual(1, builder.LanguageAttributes["Java"].Count);
+            Assert.AreEqual(1, builder.LanguageAttributes["Phyton"].Count);
         }
 
         [Test]
@@ -82,12 +82,64 @@ namespace LanguageExtension.Tests
             var resultMerge = builder1.Merge(builder2);
             var builderMerge = (LanguageBuilder)resultMerge;
 
-            Assert.AreEqual(expectedBuilder.LanguageAttributes["py"].Count, builderMerge.LanguageAttributes["py"].Count);
-            Assert.AreEqual(expectedBuilder.LanguageAttributes["java"].File[0], builderMerge.LanguageAttributes["java"].File[0]);
-            Assert.AreEqual(expectedBuilder.LanguageAttributes["cs"].File[0], builderMerge.LanguageAttributes["cs"].File[0]);
+            Assert.AreEqual(expectedBuilder.LanguageAttributes["Phyton"].Count, builderMerge.LanguageAttributes["Phyton"].Count);
+            Assert.AreEqual(expectedBuilder.LanguageAttributes["Java"].File[0], builderMerge.LanguageAttributes["Java"].File[0]);
+            Assert.AreEqual(expectedBuilder.LanguageAttributes["C#"].File[0], builderMerge.LanguageAttributes["C#"].File[0]);
 
 
 
+        }
+
+        [Test]
+        public void ValidLanguageTests()
+        {            
+            var builder = new LanguageBuilder();
+            var valid = new LanguageModel("cs", "file1.cs");
+            builder.AddLanguage(valid);
+            valid = new LanguageModel("java", "file1.java");
+            builder.AddLanguage(valid);
+            valid = new LanguageModel("js", "file1.js");
+            builder.AddLanguage(valid);
+
+
+            Assert.AreEqual(3, builder.LanguageAttributes.Count);
+            Assert.IsTrue(builder.LanguageAttributes.ContainsKey("JavaScript"));
+            Assert.IsTrue(builder.LanguageAttributes.ContainsKey("C#"));
+            Assert.IsTrue(builder.LanguageAttributes.ContainsKey("Java"));
+        }
+
+        [Test]
+        public void InvalidLanguageTest()
+        {
+            var builder = new LanguageBuilder();
+            var valid = new LanguageModel("rb", "file1.rb");
+            builder.AddLanguage(valid);
+            valid = new LanguageModel("html", "file1.html");
+            builder.AddLanguage(valid);            
+
+            Assert.AreEqual(0, builder.LanguageAttributes.Count);
+            Assert.IsFalse(builder.LanguageAttributes.ContainsKey("Ruby"));
+            Assert.IsFalse(builder.LanguageAttributes.ContainsKey("HTML"));            
+        }
+
+        [Test]
+        public void ValidAndInvalidLanguageTest()
+        {
+            var builder = new LanguageBuilder();
+            var valid = new LanguageModel("rb", "file1.rb");
+            builder.AddLanguage(valid);
+            valid = new LanguageModel("html", "file1.html");
+            builder.AddLanguage(valid);
+            valid = new LanguageModel("java", "file1.java");
+            builder.AddLanguage(valid);
+            valid = new LanguageModel("js", "file1.js");
+            builder.AddLanguage(valid);
+
+            Assert.AreEqual(2, builder.LanguageAttributes.Count);
+            Assert.IsTrue(builder.LanguageAttributes.ContainsKey("JavaScript"));
+            Assert.IsTrue(builder.LanguageAttributes.ContainsKey("Java"));            
+            Assert.IsFalse(builder.LanguageAttributes.ContainsKey("Ruby"));
+            Assert.IsFalse(builder.LanguageAttributes.ContainsKey("HTML"));            
         }
 
     }

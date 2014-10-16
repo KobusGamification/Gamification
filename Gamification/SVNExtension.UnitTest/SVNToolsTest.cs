@@ -25,8 +25,7 @@ namespace SVNExtension.UnitTest
             var xml = @".\SVN_Logs_Examples\SimpleLog.xml";
             var reader = new SVNReader(0);
             var svnPoints = reader.Read(xml)[0];
-            Assert.AreEqual(2, ((SVNModel)svnPoints.ExtensionPoint["SVNExtension"]).Modified);
-            Assert.AreEqual(0, ((SVNModel)svnPoints.ExtensionPoint["SVNExtension"]).Merges);
+            Assert.AreEqual(2, ((SVNModel)svnPoints.ExtensionPoint["SVNExtension"]).Modified);            
             Assert.AreEqual(0, ((SVNModel)svnPoints.ExtensionPoint["SVNExtension"]).Add);
             Assert.AreEqual(0, ((SVNModel)svnPoints.ExtensionPoint["SVNExtension"]).Deleted);
         }
@@ -45,8 +44,7 @@ namespace SVNExtension.UnitTest
         {
             var xml = @".\SVN_Logs_Examples\csprojeditorLog.xml";
             var reader = new SVNReader(132);
-            var svnPoints = reader.Read(xml)[0];
-            Assert.AreEqual(0, ((SVNModel)svnPoints.ExtensionPoint["SVNExtension"]).Merges);
+            var svnPoints = reader.Read(xml)[0];            
             Assert.AreEqual(4, ((SVNModel)svnPoints.ExtensionPoint["SVNExtension"]).Modified);
             Assert.AreEqual(0, ((SVNModel)svnPoints.ExtensionPoint["SVNExtension"]).Add);
             Assert.AreEqual(0, ((SVNModel)svnPoints.ExtensionPoint["SVNExtension"]).Deleted);            
@@ -59,8 +57,7 @@ namespace SVNExtension.UnitTest
             var reader = new SVNReader(0);
             var svnPoints = reader.Read(xml);
             var buttler = svnPoints.First(p => p.Name.Equals("jenkins.the.buttler"));
-            Assert.AreEqual(0, ((SVNModel)buttler.ExtensionPoint["SVNExtension"]).Add);
-            Assert.AreEqual(0, ((SVNModel)buttler.ExtensionPoint["SVNExtension"]).Merges);
+            Assert.AreEqual(0, ((SVNModel)buttler.ExtensionPoint["SVNExtension"]).Add);            
             Assert.AreEqual(0, ((SVNModel)buttler.ExtensionPoint["SVNExtension"]).Modified);
             Assert.AreEqual(1, ((SVNModel)buttler.ExtensionPoint["SVNExtension"]).Deleted);
             Assert.AreEqual("jenkins.the.buttler", buttler.Name);

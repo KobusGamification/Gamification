@@ -8,8 +8,8 @@ namespace LanguageExtension
 {
     public class LanguageExperience : Experience
     {
-        public LanguageExperience(string name, string lvlFileProp)
-            : base(name, lvlFileProp)
+        public LanguageExperience(string name, string lvlFileProp, string alias)
+            : base(name, lvlFileProp, alias)
         {
                        
         }

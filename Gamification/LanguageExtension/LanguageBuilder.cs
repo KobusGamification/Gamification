@@ -8,24 +8,49 @@ namespace LanguageExtension
 {
     public class LanguageBuilder : IExtension
     {
+        private string LanguageConfiguration { get; set; }
         public IDictionary<string, ILanguage> LanguageAttributes { get; private set; }        
 
         public LanguageBuilder()
         {
+            LanguageConfiguration = ".\\LanguageExtensionConfiguration\\KnownLanguages.prop";
             LanguageAttributes = new Dictionary<string, ILanguage>();
         }
 
         public void AddLanguage(LanguageModel model)
         {
-            ILanguage value = null;
-            if (!LanguageAttributes.TryGetValue(model.Name, out value))
+            model = GetValidLanguage(model);
+            if (model != null)
             {
-                LanguageAttributes.Add(model.Name, new SimpleLanguage(model));
+                ILanguage value = null;
+                if (!LanguageAttributes.TryGetValue(model.Name, out value))
+                {
+                    LanguageAttributes.Add(model.Name, new SimpleLanguage(model));
+                }
+                else
+                {
+                    LanguageAttributes[model.Name].Add(model);
+                }
             }
-            else
+        }
+
+        private LanguageModel GetValidLanguage(LanguageModel model)
+        {
+            LanguageModel result = null;
+            using (var reader = new StreamReader(LanguageConfiguration))
             {
-                LanguageAttributes[model.Name].Add(model);
+                while (!reader.EndOfStream)
+                {
+                    var cfg = reader.ReadLine().Split('=');
+
+                    if (model.Name.Equals(cfg[0]) || model.Name.Equals(cfg[1]))
+                    {
+                        result = new LanguageModel(cfg[1], model.File);
+                    }
+
+                }
             }
+            return result;
         }
 
         public void AddBuilder(LanguageBuilder currentLang)

@@ -34,16 +34,16 @@ Function GetCurrentedFormatedPath($repos){
     return $path
 }
 
-Function CreateRandomFiles($repos1){
+Function CreateRandomFiles($repos1, $f){
     foreach ($i in (1..10)){
-        $fileName = "temp\$repos1\test_$i.cs"
+        $fileName = "temp\$repos1\test_$i.$f"
         "content" >> $fileName
     }
 }
 
 Function AddFiles($repos1){
     cd "temp\$repos1"
-    svn add *.cs
+    svn add *.*
     cd "..\.."
 }
 
@@ -75,7 +75,8 @@ Function Main{
         
         CreateRepos $repo
         CheckoutRepos (GetCurrentedFormatedPath $repo)
-        CreateRandomFiles $repo
+        CreateRandomFiles $repo 'cs'
+		CreateRandomFiles $repo 'java'
         AddFiles $repo
         CommitFiles $repo
     }

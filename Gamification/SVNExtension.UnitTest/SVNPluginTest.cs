@@ -78,8 +78,8 @@ namespace SVNExtension.UnitTest
             var model = new SVNModel();
             model.AddAdd(10);
             model.AddModified(5);                        
-            var svnExp = new SVNExperience("TestSVNModel", fileLevel);
-            var exp = new Experience("TestUser", fileLevel);
+            var svnExp = new SVNExperience("TestSVNModel", fileLevel, "SVN");
+            var exp = new Experience("TestUser", fileLevel, "SVN");
             svnExp.AddModel(model);
             exp.AddPluginExperience(svnExp);            
             Assert.AreEqual(2, exp.Level);
@@ -94,7 +94,7 @@ namespace SVNExtension.UnitTest
             model.AddAdd(1000);
             model.AddModified(10000);
             model.AddDeleted(600);
-            var svnExp = new SVNExperience("TestUser", fileLevel);
+            var svnExp = new SVNExperience("TestUser", fileLevel, "SVN");
             svnExp.AddModel(model);
             Assert.AreEqual(17, svnExp.Level);
             Assert.AreEqual(11600, svnExp.ExperiencePoints);
@@ -107,8 +107,8 @@ namespace SVNExtension.UnitTest
             var plugin = new SVNPlugin();
             plugin.Analyze();
             plugin.Compute();
-            var db = new DatabaseManager();
-            var database = db.GetDatabase();
+            var db = new DatabaseManager();            
+            var database = db.GetDatabase();            
             var collection = database.GetCollection<IUser>(typeof(IUser).Name);
             foreach (var user in collection.FindAll())
             {

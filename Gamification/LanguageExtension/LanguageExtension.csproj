@@ -83,7 +83,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\LanguageConfiguration.cs" />
+    <Compile Include="LanguageExtensionConfiguration\LanguageConfiguration.cs" />
     <Compile Include="ILanguage.cs" />
     <Compile Include="LanguageBuilder.cs" />
     <Compile Include="LanguageExperience.cs" />
@@ -103,7 +103,8 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Configuration\LanguageConfiguration.prop" />
+    <None Include="LanguageExtensionConfiguration\KnownLanguages.prop" />
+    <None Include="LanguageExtensionConfiguration\LanguageConfiguration.prop" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

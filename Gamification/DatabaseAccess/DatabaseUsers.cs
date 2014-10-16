@@ -73,5 +73,39 @@ namespace DatabaseAccess
                 }
             }
         }
+
+        public void ComputeMainUserLevel()
+        {
+            var database = new DatabaseManager().GetDatabase();
+            var collection = database                
+                .GetCollection<IUser>(typeof(IUser).Name);
+
+            Experience xp = null;
+            foreach (var user in collection.FindAll())
+            {              
+                if(user.ExperiencePoints.ContainsKey("Experience"))
+                {
+                    xp = user.ExperiencePoints["Experience"];
+                }
+                else
+                {
+                    xp = new Experience(user.Name, ".\\Experience\\UserLevel.prop", "User Experience");
+                    user.ExperiencePoints.Add("Experience", xp);
+                }
+                foreach (var exp in user.ExperiencePoints)
+                {
+                    if (user.ExperiencePoints[exp.Key].LevelPropertiesFile != null
+                        && exp.Key != "Experience")
+                    {
+                        xp.AddPluginExperience(exp.Value);
+                    }
+                            
+                }
+                user.ExperiencePoints["Experience"] = xp;
+                new DatabaseManager().Update<IUser>(user);
+            }
+
+
+        }
     }
 }

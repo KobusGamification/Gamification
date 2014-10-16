@@ -13,10 +13,8 @@ namespace SVNExtension.UnitTest
     [TestFixture]
     public class SVNManagerTest
     {
-        /// <summary>
-        /// Testes irão mudar pois deverão pegar inforamações do BD (pensar num mock para o database)
-        /// </summary>
-        [SetUp]
+
+        [TestFixtureSetUp]
         public void SetUp()
         {
             using (var process = new Process())
@@ -61,10 +59,8 @@ namespace SVNExtension.UnitTest
                     foreach (var user in users)
                     {
                         Assert.AreEqual(10, ((SVNModel)user.ExtensionPoint["SVNExtension"]).Add);
-                        Assert.AreEqual(2, reader.CurrentRevision);
-                        Assert.AreEqual(0, ((SVNModel)user.ExtensionPoint["SVNExtension"]).Merges);
-                        Assert.AreEqual(0, ((SVNModel)user.ExtensionPoint["SVNExtension"]).Deleted);
-                        Assert.AreEqual(0, ((SVNModel)user.ExtensionPoint["SVNExtension"]).Merges);
+                        Assert.AreEqual(2, reader.CurrentRevision);                        
+                        Assert.AreEqual(0, ((SVNModel)user.ExtensionPoint["SVNExtension"]).Deleted);                        
                         Assert.AreEqual(0, ((SVNModel)user.ExtensionPoint["SVNExtension"]).Modified);
                     }
                 }
@@ -85,13 +81,8 @@ namespace SVNExtension.UnitTest
                 {
                     var users = reader.Read(file);
                     Assert.AreEqual(0, users.Count);
-                }
-
-                
+                }                
             }
         }
-
-    
-
     }
 }

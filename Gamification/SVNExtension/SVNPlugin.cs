@@ -39,7 +39,7 @@ namespace SVNExtension
 
         public void Compute()
         {
-            var users = DBUtils.GetAllUsers();
+            var users = DatabaseAccess.DatabaseUsers.GetAllUsers();
             foreach (var user in users)
             {
                 var model = (SVNModel)user.ExtensionPoint["SVNExtension"];
@@ -48,13 +48,11 @@ namespace SVNExtension
                     user.ExperiencePoints.Add(typeof(SVNExperience).Name, null);
                 }
 
-                var exp = new SVNExperience(user.Name, ".\\Experience\\UserLevel.prop");
+                var exp = new SVNExperience(user.Name, ".\\Experience\\UserLevel.prop", "SVN");
                 exp.AddModel(model);
                 user.ExperiencePoints[typeof(SVNExperience).Name] = exp;
                 DBUtils.UpdateUser(user);
-            }
-
-            
+            }            
         }
 
         
