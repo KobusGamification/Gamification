@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LanguageExtension.Tests", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extension.Test", "Extension.Test\Extension.Test.csproj", "{74712F05-AEF9-49F0-815A-59D3607C81A7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Extension.API", "Extension.API\Extension.API.csproj", "{80FFCB7F-5A41-4A0E-971E-D4939857A0F3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -111,6 +113,14 @@ Global
 		{74712F05-AEF9-49F0-815A-59D3607C81A7}.Release|Any CPU.Build.0 = Release|Any CPU
 		{74712F05-AEF9-49F0-815A-59D3607C81A7}.Release|x64.ActiveCfg = Release|Any CPU
 		{74712F05-AEF9-49F0-815A-59D3607C81A7}.Release|x86.ActiveCfg = Release|Any CPU
+		{80FFCB7F-5A41-4A0E-971E-D4939857A0F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{80FFCB7F-5A41-4A0E-971E-D4939857A0F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{80FFCB7F-5A41-4A0E-971E-D4939857A0F3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{80FFCB7F-5A41-4A0E-971E-D4939857A0F3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{80FFCB7F-5A41-4A0E-971E-D4939857A0F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{80FFCB7F-5A41-4A0E-971E-D4939857A0F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{80FFCB7F-5A41-4A0E-971E-D4939857A0F3}.Release|x64.ActiveCfg = Release|Any CPU
+		{80FFCB7F-5A41-4A0E-971E-D4939857A0F3}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

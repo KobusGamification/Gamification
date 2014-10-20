@@ -75,6 +75,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Badge\BadgeEarned.cs" />
+    <Compile Include="Badge\BadgeLevel.cs" />
+    <Compile Include="Badge\IBadge.cs" />
     <Compile Include="DefaultUser.cs" />
     <Compile Include="Experience.cs" />
     <Compile Include="IExtension.cs" />

@@ -22,8 +22,9 @@ namespace Extension
             foreach (var plugin in plugins)
             {
                 plugin.Analyze();
-                plugin.Compute();
-            }            
+                plugin.Compute();                
+            }
+            
         }
     }
 }

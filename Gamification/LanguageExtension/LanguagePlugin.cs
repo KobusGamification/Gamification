@@ -72,5 +72,15 @@ namespace LanguageExtension
             types.Add(typeof(LanguageBuilder));
             return types;
         }
+
+        public void LoadBadges()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ComputeBadges()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using Extension;
+using Extension.Badge;
 namespace Extension
 {
     
@@ -15,6 +16,8 @@ namespace Extension
         public string Name { get; set; }
         public IDictionary<string, IExtension> ExtensionPoint { get; private set; }
         public IDictionary<string, Experience> ExperiencePoints { get; private set; }
+        public List<BadgeEarned> Badges { get; private set; }
+
         public DefaultUser(string name)
         {
             if (!BsonClassMap.IsClassMapRegistered(typeof(DefaultUser)))
@@ -24,6 +27,7 @@ namespace Extension
             Name = name;
             ExtensionPoint = new Dictionary<string, IExtension>();
             ExperiencePoints = new Dictionary<string, Experience>();
+            Badges = new List<BadgeEarned>();
         }
 
     }

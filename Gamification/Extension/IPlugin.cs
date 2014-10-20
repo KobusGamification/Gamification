@@ -9,8 +9,10 @@ namespace Extension
     
     public interface IPlugin
     {
-         void Analyze();
-         void LoadDBMaps();
-         void Compute();
+        void LoadBadges();
+        void Analyze();
+        void LoadDBMaps();
+        void Compute();
+        void ComputeBadges();
     }
 }
