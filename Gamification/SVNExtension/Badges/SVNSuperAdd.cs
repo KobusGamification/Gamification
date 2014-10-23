@@ -31,9 +31,9 @@ namespace SVNExtension.Badges
             return content;
         }
 
-        public void Compute(IExtension model)
-        {
-            var svn = (SVNModel)model;
+        public void Compute(IUser user)
+        {            
+            var svn = (SVNModel) user.ExtensionPoint["SVNExtension"];
             if (svn.Add > 500)
             {
                 Gained = true;

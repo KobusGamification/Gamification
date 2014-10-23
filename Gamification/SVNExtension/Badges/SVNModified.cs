@@ -24,7 +24,7 @@ namespace SVNExtension.Badges
             ExtensionName = "SVN";
             Level = BadgeLevel.quartz;
             Content = GetContent();
-            IconPath = ".\\res\\Badges\\SVN\\modifed.png";
+            IconPath = ".\\res\\Badges\\SVN\\modified.png";
             Name = "Modified!";
             Secret = false;
             Gained = false;            
@@ -36,9 +36,9 @@ namespace SVNExtension.Badges
             return content;
         }
 
-        public void Compute(IExtension model)
+        public void Compute(IUser user)
         {
-            var svn = (SVNModel)model;
+            var svn = (SVNModel)user.ExtensionPoint["SVNExtension"];
             if (svn.Modified > 0)
             {
                 Gained = true;

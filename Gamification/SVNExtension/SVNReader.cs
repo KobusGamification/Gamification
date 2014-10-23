@@ -6,16 +6,20 @@ using System.Threading.Tasks;
 using System.Xml;
 using LanguageExtension;
 using Extension;
+using SVNExtension.Model;
+using System.Globalization;
 namespace SVNExtension
 {
     public class SVNReader
     {
 
         public int CurrentRevision { get; private set; }
+        public List<SVNInfo> Infos { get; private set; }
 
         public SVNReader(int startRevision)
         {
             CurrentRevision = startRevision;
+            Infos = new List<SVNInfo>();
         }
 
         public List<IUser> Read(string xmlPath)
@@ -39,6 +43,7 @@ namespace SVNExtension
                 foreach (XmlNode node in doc.SelectNodes(xpath))
                 {
                     var currentUser = node.ParentNode.ParentNode.SelectSingleNode("author").InnerText;
+                    var currentDate = node.ParentNode.ParentNode.SelectSingleNode("date").InnerText;
                     if (userDict.Keys.Count > 0)
                     {
                         if (userDict.Keys.Contains(currentUser))
@@ -69,6 +74,9 @@ namespace SVNExtension
                     var kind = node.InnerText;
                     var modelLanguage = LanguageBuilder.TransformPathToLanguageModel(kind);
                     ((LanguageBuilder)user.ExtensionPoint["LanguageExtension"]).AddLanguage(modelLanguage);
+
+                    Infos.Add(SVNBuilder.AddInfo(action, currentUser,
+                        DateTime.ParseExact(currentDate, "yyyy-MM-ddTHH:mm:ss.ffffffZ", CultureInfo.InstalledUICulture)));
                     user.ExtensionPoint["SVNExtension"] = SVNBuilder.AddAction(action, ((SVNModel)user.ExtensionPoint["SVNExtension"]));
                 }
 

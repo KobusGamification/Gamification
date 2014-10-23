@@ -10,6 +10,7 @@ using SVNExtension.Badges;
 using DatabaseAccess;
 using Extension;
 using LanguageExtension;
+using SVNExtension.Model;
 namespace SVNExtension.UnitTest
 {
     [TestFixture]
@@ -38,8 +39,30 @@ namespace SVNExtension.UnitTest
             var p = new SVNPlugin();
             p.LoadDBMaps();
             p.LoadBadges();
-            badge.Compute(model);
+            var user = new DefaultUser("teste");
+            user.ExtensionPoint.Add("SVNExtension", model);
+            badge.Compute(user);
             Assert.AreEqual(true, badge.Gained);            
+        }
+
+        [Test]
+        public void SVNWeekendIntegrationEarnedTest()
+        {
+            new SVNPlugin().LoadDBMaps();
+            var db = new DatabaseManager();           
+            var svnInfo = new SVNInfo("user1", DateTime.Now, SVNType.Add);
+            db.Insert<SVNInfo>(svnInfo);
+            svnInfo = new SVNInfo("user1", DateTime.Now.AddDays(1), SVNType.Add);
+            db.Insert<SVNInfo>(svnInfo);
+            svnInfo = new SVNInfo("user1", DateTime.Now.AddDays(2), SVNType.Add);
+            db.Insert<SVNInfo>(svnInfo);
+            svnInfo = new SVNInfo("user1", DateTime.Now.AddDays(3), SVNType.Add);
+            db.Insert<SVNInfo>(svnInfo);
+            svnInfo = new SVNInfo("user1", DateTime.Now.AddDays(4), SVNType.Add);
+            db.Insert<SVNInfo>(svnInfo);
+            var badge = new SVNWeekendIntegration();
+            badge.Compute(null);
+            Assert.IsTrue(badge.Gained);
         }
 
         [Test]

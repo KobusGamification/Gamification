@@ -88,10 +88,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Badges\SVNAdd.cs" />
+    <Compile Include="Badges\SVNDeleted.cs" />
+    <Compile Include="Badges\SVNLvUp.cs" />
+    <Compile Include="Badges\SVNLvUpFourthy.cs" />
+    <Compile Include="Badges\SVNLvUpMax.cs" />
+    <Compile Include="Badges\SVNLvUpTen.cs" />
+    <Compile Include="Badges\SVNLvUpThirty.cs" />
+    <Compile Include="Badges\SVNLvUpTwenty.cs" />
     <Compile Include="Badges\SVNModified.cs" />
+    <Compile Include="Badges\SVNSubversionMaster.cs" />
     <Compile Include="Badges\SVNSuperAdd.cs" />
+    <Compile Include="Badges\SVNSuperDelete.cs" />
+    <Compile Include="Badges\SVNSuperModfied.cs" />
+    <Compile Include="Badges\SVNWeekendIntegration.cs" />
     <Compile Include="DB\DBUtils.cs" />
+    <Compile Include="Model\SVNInfo.cs" />
     <Compile Include="Model\SVNRepository.cs" />
+    <Compile Include="Model\SVNType.cs" />
     <Compile Include="SVNBuilder.cs" />
     <Compile Include="SVNConfiguration.cs" />
     <Compile Include="SVNExperience.cs" />

@@ -76,5 +76,11 @@ namespace SVNExtension.DB
             var user = collection.FindOne(query);            
             return user;
         }
+
+        internal static void InsertInfo(SVNInfo info)
+        {
+            var database = new DatabaseManager();
+            database.Insert<SVNInfo>(info);
+        }
     }
 }

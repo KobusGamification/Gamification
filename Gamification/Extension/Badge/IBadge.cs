@@ -18,6 +18,6 @@ namespace Extension.Badge
         string IconPath { get; }
         bool Gained { get; }
 
-        void Compute(IExtension extension);
+        void Compute(IUser user);
     }
 }

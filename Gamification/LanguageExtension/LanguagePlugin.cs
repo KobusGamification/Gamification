@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Extension;
 using MongoDB.Bson.Serialization;
 using DatabaseAccess;
+using Extension.Badge;
+using MongoDB.Driver.Builders;
 namespace LanguageExtension
 {
     public class LanguagePlugin : IPlugin
@@ -75,12 +77,53 @@ namespace LanguageExtension
 
         public void LoadBadges()
         {
-            throw new NotImplementedException();
+            var type = typeof(IBadge);
+            var badges = AppDomain.CurrentDomain.GetAssemblies()
+                .SelectMany(s => s.GetTypes())
+                .Where(p => type.IsAssignableFrom(p) && p.IsClass);
+
+            var db = new DatabaseAccess.DatabaseManager();
+            var collection =
+                db.GetDatabase().GetCollection<IBadge>(typeof(IBadge).Name);
+            foreach (var badge in badges)
+            {
+                var query = Query.EQ("_t", badge.Name);
+                var b = collection.FindOne(query);
+                if (b == null)
+                {
+                    b = (IBadge)Activator.CreateInstance(Type.GetType(badge.FullName));
+                    db.Insert<IBadge>(b);
+                }
+            }
         }
 
         public void ComputeBadges()
         {
-            throw new NotImplementedException();
+            var dbManager = new DatabaseManager();
+            var db = dbManager.GetDatabase();
+            var collection = db.GetCollection<IBadge>(typeof(IBadge).Name);
+            var query = Query.EQ("ExtensionName", "Languages");
+
+            var users = db
+                .GetCollection<IUser>(typeof(IUser).Name)
+                .FindAll()
+                .ToList();
+
+            var languageBadges = collection.Find(query)
+                .ToList();
+
+            foreach (var user in users)
+            {                
+                var badgesToCompute = languageBadges
+                    .Where(p => !(user.Badges.Exists(e => e.Name == p.Name)))
+                    .ToList();
+                badgesToCompute.ForEach(p => p.Compute(user));
+                badgesToCompute.Where(p => p.Gained == true)
+                    .ToList()
+                    .ForEach(p => user.Badges
+                        .Add(new BadgeEarned(p.Name, DateTime.UtcNow)));
+                new DatabaseManager().Update<IUser>(user);
+            }
         }
     }
 }

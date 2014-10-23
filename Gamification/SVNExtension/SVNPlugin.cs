@@ -113,7 +113,9 @@ namespace SVNExtension
                 var reader = new SVNReader(Repos[i].CurrentVersion);
                 results.Add(reader.Read(logs[i]));
                 Repos[i].CurrentVersion = reader.CurrentRevision;
+                reader.Infos.ForEach(p => DBUtils.InsertInfo(p));   
             }
+            
             foreach (var resultRead in results)
             {
                 foreach (var user in resultRead)
@@ -193,8 +195,7 @@ namespace SVNExtension
                 {                
                     b = (IBadge)Activator.CreateInstance(Type.GetType(badge.FullName));
                     db.Insert<IBadge>(b);
-                }
-                
+                }                
             }
                 
         }
@@ -220,9 +221,7 @@ namespace SVNExtension
                 var badgesToCompute = svnBadges
                     .Where(p => !(user.Badges.Exists(e => e.Name == p.Name)))
                     .ToList();
-
-                badgesToCompute.ForEach(p => p.Compute(svnModel));
-                
+                badgesToCompute.ForEach(p => p.Compute(user));                
                 badgesToCompute.Where(p => p.Gained == true)
                     .ToList()
                     .ForEach(p => user.Badges

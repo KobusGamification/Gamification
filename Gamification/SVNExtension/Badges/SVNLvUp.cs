@@ -1,15 +1,14 @@
-﻿using Extension;
-using Extension.Badge;
-using MongoDB.Bson;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Extension;
+using Extension.Badge;
+using MongoDB.Bson;
 namespace SVNExtension.Badges
 {
-    public class SVNAdd : IBadge
+    public class SVNLvUp : IBadge
     {
         public ObjectId id { get; private set; }
         public BadgeLevel Level { get; private set; }
@@ -20,27 +19,28 @@ namespace SVNExtension.Badges
         public bool Secret { get; private set; }
         public bool Gained { get; private set; }
 
-        public SVNAdd()
+        public SVNLvUp()
         {
             ExtensionName = "SVN";
             Level = BadgeLevel.quartz;
             Content = GetContent();
-            IconPath = ".\\res\\Badges\\SVN\\Add.png";
-            Name = "Add!";
+            IconPath = ".\\res\\Badges\\SVN\\SVNLevelUp.png";
+            Name = "Level Up!";
             Secret = false;
-            Gained = false;            
+            Gained = false;
         }
 
         public string GetContent()
         {
-            return "Add any file in a repository.";
+            var content = "Up a Subversion Level";
+            return content;
         }
 
         public void Compute(IUser user)
         {
-            var svn = (SVNModel)user.ExtensionPoint["SVNExtension"];
-
-            if (svn.Add > 0)
+            var exp = new SVNExperience("current", ".\\Experience\\UserLevel.prop", "Alias");
+            exp.AddModel((SVNModel)user.ExtensionPoint["SVNExtension"]);
+            if (exp.Level > 1)
             {
                 Gained = true;
             }
