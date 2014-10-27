@@ -10,6 +10,7 @@ namespace Gamification.Service
     {
         static void Main(string[] args)
         {
+            log4net.Config.XmlConfigurator.Configure();
             System.ServiceProcess.ServiceBase.Run(new GamificationService());
         }
     }

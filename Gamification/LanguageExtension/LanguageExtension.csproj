@@ -74,6 +74,7 @@
       <HintPath>..\packages\mongocsharpdriver.1.9.2\lib\net35\MongoDB.Driver.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -83,6 +84,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Badges\CSharp\LanguageCSharpMaxLevel.cs" />
+    <Compile Include="Badges\CSharp\LanguageCSharpTenLevels.cs" />
+    <Compile Include="Badges\CSharp\LanguageCSharpTwentyFiveLevels.cs" />
+    <Compile Include="Badges\CSharp\LanguageFirstCSharpLevel.cs" />
     <Compile Include="LanguageExtensionConfiguration\LanguageConfiguration.cs" />
     <Compile Include="ILanguage.cs" />
     <Compile Include="LanguageBuilder.cs" />

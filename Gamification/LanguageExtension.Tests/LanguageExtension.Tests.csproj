@@ -94,6 +94,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LanguageBadgeCSharpTests.cs" />
     <Compile Include="LanguageBuilderTests.cs" />
     <Compile Include="LanguageExperienceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -108,6 +109,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DatabaseAccess\DatabaseAccess.csproj">
+      <Project>{e77f2ba0-38c1-4698-95c8-e9a106526e07}</Project>
+      <Name>DatabaseAccess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Extension\Extension.csproj">
       <Project>{244b5308-e529-442c-87c3-60bafc961372}</Project>
       <Name>Extension</Name>

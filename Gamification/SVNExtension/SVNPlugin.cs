@@ -15,6 +15,7 @@ using MongoDB.Driver.Builders;
 using Extension.Badge;
 using DatabaseAccess;
 using MongoDB.Bson.Serialization.Options;
+using log4net;
 
 namespace SVNExtension
 {
@@ -22,9 +23,10 @@ namespace SVNExtension
     public class SVNPlugin : IPlugin
     {
         public List<SVNRepository> Repos { get; private set; }
-
+        public ILog log { get; private set; }
         public SVNPlugin()
         {
+            log = log4net.LogManager.GetLogger(typeof(SVNPlugin));
             Repos = new List<SVNRepository>();
             LoadConfiguration();
         }
@@ -79,11 +81,13 @@ namespace SVNExtension
 
         public void LoadDBMaps()
         {
-            
+            log.Info("Getting types");
             foreach (var type in GetRegisteredTypes())
             {
+                log.InfoFormat("Registering {0}", type.Name);
                 if (!BsonClassMap.IsClassMapRegistered(type))
                 {
+                    log.Info("Looking Up");
                     BsonClassMap.LookupClassMap(type);
                 }
             }            
@@ -94,12 +98,17 @@ namespace SVNExtension
             var types = new List<Type>();
             types.Add(typeof(SVNModel));
             types.Add(typeof(DefaultUser));
+            types.Add(typeof(Experience));
             types.Add(typeof(SVNExperience));            
             AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
-                .Where(p => typeof(IBadge).IsAssignableFrom(p) && p.IsClass)
-                .ToList()
-                .ForEach(p => types.Add(Type.GetType(p.FullName)));            
+                .Where(p => typeof(IBadge).IsAssignableFrom(p) && p.IsClass && p.FullName.StartsWith("SVN"))
+                .ToList()                
+                .ForEach(p => {                    
+                    types.Add(Type.GetType(p.FullName));
+                    log.InfoFormat("Type found {0}", p.FullName);
+                });            
+
             return types;
         }
 

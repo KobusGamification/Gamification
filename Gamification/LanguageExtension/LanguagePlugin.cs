@@ -8,8 +8,10 @@ using MongoDB.Bson.Serialization;
 using DatabaseAccess;
 using Extension.Badge;
 using MongoDB.Driver.Builders;
+using System.ComponentModel.Composition;
 namespace LanguageExtension
 {
+    [Export(typeof(IPlugin))]
     public class LanguagePlugin : IPlugin
     {
         /// <summary>

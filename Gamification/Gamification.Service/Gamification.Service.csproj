@@ -32,7 +32,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net">
+      <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
@@ -55,6 +59,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DatabaseAccess\DatabaseAccess.csproj">
+      <Project>{e77f2ba0-38c1-4698-95c8-e9a106526e07}</Project>
+      <Name>DatabaseAccess</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Extension.API\Extension.API.csproj">
+      <Project>{80ffcb7f-5a41-4a0e-971e-d4939857a0f3}</Project>
+      <Name>Extension.API</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Extension\Extension.csproj">
+      <Project>{244b5308-e529-442c-87c3-60bafc961372}</Project>
+      <Name>Extension</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
