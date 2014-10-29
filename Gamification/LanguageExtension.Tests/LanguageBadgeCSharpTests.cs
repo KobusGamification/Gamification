@@ -32,5 +32,7 @@ namespace LanguageExtension.Tests
             Assert.IsTrue(badge.Gained);
         }
 
+
+
     }
 }

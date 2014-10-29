@@ -15,6 +15,7 @@ namespace SVNExtension
 
         public int CurrentRevision { get; private set; }
         public List<SVNInfo> Infos { get; private set; }
+        static log4net.ILog log = log4net.LogManager.GetLogger(typeof(SVNReader));
 
         public SVNReader(int startRevision)
         {
@@ -24,6 +25,7 @@ namespace SVNExtension
 
         public List<IUser> Read(string xmlPath)
         {
+            log.InfoFormat("Reading svn : {0}", xmlPath);
             if (string.IsNullOrWhiteSpace(xmlPath))
             {
                 throw new ArgumentNullException("xmlPath");
@@ -44,6 +46,8 @@ namespace SVNExtension
                 {
                     var currentUser = node.ParentNode.ParentNode.SelectSingleNode("author").InnerText;
                     var currentDate = node.ParentNode.ParentNode.SelectSingleNode("date").InnerText;
+                    log.DebugFormat("current user : {0}", currentUser);
+                    log.DebugFormat("currnet date : {0}", currentDate);
                     if (userDict.Keys.Count > 0)
                     {
                         if (userDict.Keys.Contains(currentUser))
@@ -86,12 +90,12 @@ namespace SVNExtension
                     result.Add(userDict[key]);
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                //log msg
+                log.ErrorFormat("Message : {0}", ex.Message);
+                log.ErrorFormat("StackTrace : {0}", ex.StackTrace);                
                 return result;
             }
-
             return result;
         }
     }

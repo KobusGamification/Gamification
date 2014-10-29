@@ -10,12 +10,13 @@ namespace SVNExtension
 
         public List<string> Files { get; private set; }
         private string output = "SVNReports";
-
+        static log4net.ILog log = log4net.LogManager.GetLogger(typeof(SVNManager));
         public SVNManager()
         {
             Files = new List<string>();
             if (!Directory.Exists(output))
             {
+                log.DebugFormat("Creating directory {0}", output);
                 Directory.CreateDirectory(output);
             }
         }
@@ -27,6 +28,7 @@ namespace SVNExtension
             var args = string.Format("log --xml -r {0}:HEAD {1} -v", startRevision, url);
             var content = StartProcess(cmd, args);
             var filePath = Path.Combine(output, string.Format("{0}_{1}_.xml", fileName, DateTime.Now.ToString("yyyyMMdd-hhmmss")));
+            log.DebugFormat("Writing all content to : {0}", filePath);
             File.WriteAllText(filePath, content);
             Files.Add(filePath);
         }
@@ -63,9 +65,11 @@ namespace SVNExtension
                 proc.StartInfo.UseShellExecute = false;
                 proc.StartInfo.CreateNoWindow = true;
                 proc.StartInfo.RedirectStandardOutput = true;
+                log.Info("Starting svn process");
                 proc.Start();
                 StreamReader sr = proc.StandardOutput;
                 result = sr.ReadToEnd();
+                log.Info("Reading output and waiting for exit.");
                 proc.WaitForExit();
             }
             return result;
@@ -75,11 +79,5 @@ namespace SVNExtension
         {
             Directory.Delete(output, true);
         }
-
-
-        /*C:\Users\leonardo.kobus\Desktop>svn log --xml "file:///c:/users/leonardo.kobus/d
-esktop/games/Gamification/SVNExtension.UnitTest/bin/Debug/RepositorioNET" -v > o
-ut.txt
-         * */
     }
 }

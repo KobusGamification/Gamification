@@ -67,6 +67,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -78,6 +79,9 @@
     <Compile Include="Badge\BadgeEarned.cs" />
     <Compile Include="Badge\BadgeLevel.cs" />
     <Compile Include="Badge\IBadge.cs" />
+    <Compile Include="Configuration\ExperienceConfiguration.cs" />
+    <Compile Include="Configuration\ExperiencesConfiguration.cs" />
+    <Compile Include="Configuration\ExperienceSection.cs" />
     <Compile Include="DefaultUser.cs" />
     <Compile Include="Experience.cs" />
     <Compile Include="IExtension.cs" />
@@ -92,6 +96,7 @@
   <ItemGroup>
     <None Include="UserLevel.prop" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

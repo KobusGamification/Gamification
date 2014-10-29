@@ -11,6 +11,7 @@ namespace SVNExtension.DB
 {
     public class DBUtils
     {
+        static log4net.ILog log = log4net.LogManager.GetLogger(typeof(DBUtils));
         public static bool ReposExists(string url)
         {
             var exists = false;
@@ -41,16 +42,11 @@ namespace SVNExtension.DB
             {
                 db.Update<SVNRepository>(repo);
             }
-        }
-
-        public static void InsertUser(IUser user)
-        {
-            var db = new DatabaseManager();
-            db.Insert<IUser>(user);
-        }
+        }     
 
         public static void UpdateUser(IUser user)
         {
+            log.DebugFormat("Updating user {0}", user.Name);
             var db = new DatabaseManager();
             db.Update<IUser>(user);
         }
@@ -73,14 +69,16 @@ namespace SVNExtension.DB
             var database = db.GetDatabase();
             var collection = database.GetCollection<IUser>(typeof(IUser).Name);
             var query = Query.EQ("Name", name);
+            log.DebugFormat("Finding user {0}", name);
             var user = collection.FindOne(query);            
             return user;
         }
 
-        internal static void InsertInfo(SVNInfo info)
+        public static void Insert<T>(T document)
         {
-            var database = new DatabaseManager();
-            database.Insert<SVNInfo>(info);
+            var db = new DatabaseManager();
+            log.DebugFormat("Inserting document {0}", typeof(T).Name);
+            db.Insert<T>(document);
         }
     }
 }

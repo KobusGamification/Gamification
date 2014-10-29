@@ -38,10 +38,12 @@ namespace SVNExtension
             {
                 if (DBUtils.ReposExists(repo.Url))
                 {
+                    log.DebugFormat("Repository exists, getting in database : {0}", repo.Url);
                     Repos.Add(DBUtils.GetRepository(repo.Url));
                 }
                 else
                 {
+                    log.DebugFormat("Repo {0} not exist, creating a new one", repo.Url);
                     var repository = new SVNRepository(repo.Url);
                     Repos.Add(repository);
                 }
@@ -50,6 +52,7 @@ namespace SVNExtension
 
         public void Compute()
         {
+            log.Info("Getting all users");
             var users = DatabaseAccess.DatabaseUsers.GetAllUsers();
             foreach (var user in users)
             {
@@ -62,6 +65,7 @@ namespace SVNExtension
                 var exp = new SVNExperience(user.Name, ".\\Experience\\UserLevel.prop", "SVN");
                 exp.AddModel(model);
                 user.ExperiencePoints[typeof(SVNExperience).Name] = exp;
+                log.InfoFormat("Updating user {0} in the database", user.Name);
                 DBUtils.UpdateUser(user);
             }            
         }
@@ -74,6 +78,7 @@ namespace SVNExtension
             var config = (SVNConfiguration)ConfigurationManager.GetSection("SVN");
             foreach (var repo in Repos)
             {
+                log.InfoFormat("Generating xml for : {0}", repo.Url);
                 manager.Generate(repo.Url, repo.CurrentVersion);
             }
             return manager.Files;
@@ -122,16 +127,15 @@ namespace SVNExtension
                 var reader = new SVNReader(Repos[i].CurrentVersion);
                 results.Add(reader.Read(logs[i]));
                 Repos[i].CurrentVersion = reader.CurrentRevision;
-                reader.Infos.ForEach(p => DBUtils.InsertInfo(p));   
+                reader.Infos.ForEach(p => DBUtils.Insert<SVNInfo>(p));   
             }
             
             foreach (var resultRead in results)
             {
                 foreach (var user in resultRead)
                 {
-                    
-                    UpdateUser(user);       
-                    
+                    log.InfoFormat("Updating user : {0}", user.Name);
+                    UpdateUser(user);                           
                 }
             }
             UpdateReposytorys();            
@@ -139,6 +143,7 @@ namespace SVNExtension
 
         private void UpdateReposytorys()
         {
+            log.Info("Updating repositorys");
             DBUtils.UpdateRepositorys(Repos);
         }
 
@@ -156,7 +161,8 @@ namespace SVNExtension
             }
             else
             {
-                DBUtils.InsertUser(user);
+                log.InfoFormat("Inserting user {0} in the database", user.Name);
+                DBUtils.Insert<IUser>(user);
             }            
         }
 
@@ -169,6 +175,7 @@ namespace SVNExtension
 
         private string FormatModelContentToTimeline(SVNModel model)
         {
+            log.Info("Formating svn model to str");
             var builder = new StringBuilder();
             builder.AppendFormat("Gained {0} experience Points\n", (model.Modified + model.Add + model.Deleted));
             if (model.Add != 0)
@@ -188,6 +195,7 @@ namespace SVNExtension
 
         public void LoadBadges()
         {
+            log.Info("Loading badges");
             var type = typeof(IBadge);
             var badges = AppDomain.CurrentDomain.GetAssemblies()
                 .SelectMany(s => s.GetTypes())
@@ -211,21 +219,25 @@ namespace SVNExtension
 
         public void ComputeBadges()
         {
+            log.Info("Computing badges");
             var dbManager = new DatabaseManager();
             var db = dbManager.GetDatabase();
             var collection = db.GetCollection<IBadge>(typeof(IBadge).Name);
             var query = Query.EQ("ExtensionName", "SVN");
-                        
+
+            log.Info("Finding users");
             var users = db
                 .GetCollection<IUser>(typeof(IUser).Name)
                 .FindAll()                
                 .ToList();
-            
+
+            log.Info("Finding badges");
             var svnBadges = collection.Find(query)
                 .ToList();
 
             foreach (var user in users)
             {
+                log.DebugFormat("Computing badge for user : {0}", user.Name);
                 var svnModel = user.ExtensionPoint["SVNExtension"];
                 var badgesToCompute = svnBadges
                     .Where(p => !(user.Badges.Exists(e => e.Name == p.Name)))
